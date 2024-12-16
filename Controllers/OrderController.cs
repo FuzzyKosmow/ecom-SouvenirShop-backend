@@ -86,10 +86,11 @@ namespace ecommerce_api.Controllers
             // Try to assign the current user's email to the order
             if (User.Identity.Name == null)
             {
-                Console.WriteLine("WARN: User not found. Order will be created without user ID");  
+                Console.WriteLine("WARN: User not found. Order will be created without user ID");
                 order.CustomerId = null;
             }
-            else {
+            else
+            {
                 var user = await _userManager.FindByEmailAsync(User.Identity.Name);
                 if (user == null)
                 {
@@ -98,11 +99,11 @@ namespace ecommerce_api.Controllers
                 }
                 else
                 {
-                    order.CustomerId = user.Id;   
+                    order.CustomerId = user.Id;
                 }
             }
-           
-            
+
+
             try
             {
                 var newOrder = await _orderService.CreateOrderAsync(order);
@@ -206,8 +207,11 @@ namespace ecommerce_api.Controllers
             [FromQuery] int page = 1,
             [FromQuery] int limit = 10)
         {
-            var orders = await _orderService.GetOrdersFilter(status, paymentMethod, userId, page, limit);
-            return Ok(orders);
+            // Total attach to header
+            GetAdminOrdersDTO res = await _orderService.GetOrdersFilter(status, paymentMethod, userId, page, limit);
+            // Access control expose header
+            Response.Headers.Add("X-Total-Count", res.TotalOrders.ToString());
+            return Ok(res.Orders);
         }
 
         /// <summary>

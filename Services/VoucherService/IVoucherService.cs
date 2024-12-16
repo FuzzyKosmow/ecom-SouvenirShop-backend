@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ecommerce_api.DTO.Voucher;
+using ecommerce_api.Models;
 
 namespace ecommerce_api.Services.VoucherService
 {
     public interface IVoucherService
     {
         Task<bool> IsVoucherUsable(string voucherCode);
-        Task<List<string>> GetVoucherCodes(int limit, int page);
+        Task<List<Voucher>> GetVoucherCodes(int limit, int page);
         Task<string?> CreateVoucherCode(CreateVoucherDTO voucher);
 
         Task<bool> DeleteVoucherCode(string voucherCode);
@@ -20,7 +21,7 @@ namespace ecommerce_api.Services.VoucherService
         /// Generate a random voucher code. 6 characters long and does not exist in the database
         /// </summary>
         Task<string> GenerateVoucherCode();
-        
+
         Task<decimal> GetDiscountAmount(string voucherCode);
     }
 }

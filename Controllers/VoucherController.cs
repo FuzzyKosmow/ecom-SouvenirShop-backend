@@ -122,7 +122,7 @@ namespace ecommerce_api.Controllers
         ///     200: The voucher is usable or not (true or false)
         /// </returns>
         [HttpGet("{voucherCode}/can-use")]
-        
+
         public async Task<IActionResult> CanUseVoucher(string voucherCode)
         {
             var result = await _voucherService.IsVoucherUsable(voucherCode);
@@ -132,10 +132,13 @@ namespace ecommerce_api.Controllers
         [HttpGet("{voucherCode}/discount-amount")]
         public async Task<IActionResult> GetDiscountAmount(string voucherCode)
         {
-            try {
+            try
+            {
                 var result = await _voucherService.GetDiscountAmount(voucherCode);
                 return Ok(result);
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 return BadRequest(e.Message);
             }
         }

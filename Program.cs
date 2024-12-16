@@ -5,12 +5,12 @@ using ecommerce_api;
 using ecommerce_api.Models;
 using ecommerce_api.Profiles;
 using ecommerce_api.Services;
-using ecommerce_api.Services.Cookies;
 using ecommerce_api.Services.JWT;
 using ecommerce_api.Services.OrderService;
 using ecommerce_api.Services.PaymentService;
 using ecommerce_api.Services.ProductService;
 using ecommerce_api.Services.ShippingService;
+using ecommerce_api.Services.SiteInfoService;
 using ecommerce_api.Services.TaxService;
 using ecommerce_api.Services.VoucherService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -21,6 +21,7 @@ using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 // Mark variable to use in memory database
 var useInMem = false;
+#region Configuration
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(
     options =>
@@ -40,10 +41,12 @@ builder.Services.AddCors(options =>
     {
         builder.AllowAnyOrigin()
                .AllowAnyMethod()
-               .AllowAnyHeader();
+               .AllowAnyHeader()
+               .WithExposedHeaders("X-Total-Count");
     });
 });
-// Database
+#endregion
+#region Database
 if (useInMem)
 {
     builder.Services.AddDbContext<AppDbContext>(options =>
@@ -59,8 +62,9 @@ else
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     });
 }
+#endregion
 
-
+#region Authentication
 // JSON Serialization settings
 builder.Services.AddControllers().AddJsonOptions(options =>
     {
@@ -100,21 +104,20 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Secret"])),
     };
 });
+#endregion
+
+
+#region Services
 builder.Services.AddAuthorization(options =>
 {
     // Roles
     options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
     options.AddPolicy("UserPolicy", policy => policy.RequireRole("User"));
 });
+#endregion
 
 
-
-// Profiles mapping
-builder.Services.AddAutoMapper(typeof(UserMappingProfile));
-builder.Services.AddAutoMapper(typeof(ProductMappingProfile));
-
-
-// Services
+#region Services
 builder.Services.AddScoped<PromotionService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ITaxService, TaxService>();
@@ -123,7 +126,16 @@ builder.Services.AddScoped<IShippingService, ShippingService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IVoucherService, VoucherService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<ISiteInfoService, SiteInfoService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
+#endregion
 
+
+#region Mapping
+// Profiles mapping
+builder.Services.AddAutoMapper(typeof(UserMappingProfile));
+builder.Services.AddAutoMapper(typeof(ProductMappingProfile));
+#endregion
 var app = builder.Build();
 
 app.UseCors();

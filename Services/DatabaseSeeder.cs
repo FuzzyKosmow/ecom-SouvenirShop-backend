@@ -51,18 +51,59 @@ namespace ecommerce_api.Services.JWT
             {
                 var categories = new List<Category>
                 {
-                    new Category { Name = "Phones" },
-                    new Category { Name = "Samsung" },
-                    new Category { Name = "Apple" },
-                    new Category { Name = "Google" },
-                    new Category { Name = "Xiaomi" },
-                    new Category { Name = "Vivo" },
-                    new Category { Name = "Realme" },
-                    new Category { Name = "Accessories" },
-                    new Category { Name = "Cases" },
-                    new Category { Name = "iOS" },
-                    new Category { Name = "Android" },
-                    new Category { Name = "Tablets" },
+                    new Category { Name = "Architecture Wire Replica",
+                    Image = "https://cdn11.bigcommerce.com/s-91br/product_images/uploaded_images/banner-wire-models.jpg"
+                    ,
+                    Description = "",
+                    IsPopular = true
+                    },
+                    new Category { Name = "Books", Image = "https://cdn11.bigcommerce.com/s-91br/images/stencil/250x250/v/book-detroit-then-and-now_1537376206__89874.original.jpg"
+                        ,
+                        Description = "",
+                        IsPopular = true
+
+                    },
+                    new Category { Name = "Christmas Ornaments", Image = "https://www.citysouvenirs.com/product_images/uploaded_images/christmas-xmasinjuly2013.jpg"
+                    ,
+                    Description = "",
+                    IsPopular = true
+                    },
+
+
+                    new Category
+                    {
+                        Name = "Statues & Models",
+                        Image = "https://cdn11.bigcommerce.com/s-91br/images/stencil/250x250/v/statue-nyc-statue-of-liberty-top-zoom_1537379066__22886.original.jpg"
+                        ,
+                        Description = "",
+                        IsPopular = false
+                    },
+                    new Category
+                    {
+                        Name = "Games & Fun",
+                        Image = "https://cdn11.bigcommerce.com/s-91br/images/stencil/250x250/o/puzzle-pisa-3d_1537377032__87525.original.jpg"
+                        ,
+                        Description = "",
+                        IsPopular = false
+
+                    },
+                    new Category
+                    {
+                        Name = "Snow Globes",
+                        Image = "https://cdn11.bigcommerce.com/s-91br/images/stencil/250x250/g/snowglobe-philadelphia-45mm-liberty-bell_1537378994__27063.original.jpg"
+                        ,
+                        Description = "",
+                        IsPopular = true
+                    },
+                    new Category
+                    {
+                        Name = "Clothing",
+                        Image = "https://cdn11.bigcommerce.com/s-91br/images/stencil/250x250/p/shirt-london-union-jack_1537376493__75222.original.jpg"
+                        ,
+                        Description = "",
+                        IsPopular = false
+                    },
+
                 };
                 await _context.Categories.AddRangeAsync(categories);
             }
@@ -70,212 +111,295 @@ namespace ecommerce_api.Services.JWT
             // Check if there are any existing products in the database
             if (await _context.Products.CountAsync() == 0)
             {
-                // Sample product data
-                var sampleProduct = new Product
+                // Snow globes
+                var snow1 = new Product
                 {
-                    Name = "Samsung 15 Plus 512GB",
-                    Price = 30890000,
+                    Name = "New York City Snow Globe",
+                    Price = 250000,
                     DiscountPrice = 0,
                     Rating = 4.5f,
                     Availability = true,
-                    Stock = 1,
-                    Colors = new List<string> { "Pink" },
-                    StorageOptions = new List<string> { "512GB" },
-                    StorageModifiers = new List<decimal> { 1.0m },
-                    Images = new List<string> { "https://res.cloudinary.com/de0lj9ydr/image/upload/v1729943047/phones/hnlcxkzfry9acrntg3fm.jpg",
-                    "https://res.cloudinary.com/de0lj9ydr/image/upload/v1729943047/phones/jda4h9zgfxarw86dg69e.jpg" },
-                    Description = "Maintaining the modern square design similar to its predecessors, the iPhone 15 Plus is a perfect choice for users who want a balanced size. It’s not too small like the iPhone 15 or overly expensive like the iPhone 15 Pro Max. Additionally, it comes in three storage options: 128GB/256GB/512GB, offering a wide range of choices for iPhone users.",
-                    SpecificationsJson = JsonSerializer.Serialize(new Dictionary<string, string>
-                    {
-                        { "Operating System", "iOS 17" },
-                        { "Mobile Network", "2G, 3G, 4G, 5G" },
-                        { "Internal Storage", "256GB" },
-                        { "Camera Resolution", "Main Camera: 48MP / f1.6 aperture" },
-                        { "SIM Slots", "Dual SIM (nano-SIM and eSIM)" },
-                        { "Processor", "Apple A16 Bionic" },
-                        { "Display Technology", "Super Retina XDR" },
-                        { "Resolution", "2796 x 1290" },
-                        { "Screen Size", "6.7 inches" }
-                    })
-
+                    Stock = 50,
+                    Country = "USA",
+                    RelatedCity = "New York City",
+                    Images = new List<string> { "https://cdn11.bigcommerce.com/s-91br/images/stencil/1280x1280/products/2541/21727/snowglobe-nyc-skyline-silver-65mm-WG199-1__38961.1588005982.jpg?c=2" },
+                    Description = "This New York City snow globe features the Statue of Liberty, Empire State Building, Chrysler Building, Brooklyn Bridge, and more. Measures 65mm. Made of glass and polyresin. These globes contain snow and do not play music.",
                 };
 
-                //Add products 3 times
-                var sample2 = new Product
+
+                var snow2 = new Product
                 {
-                    Name = "Iphone 15 Plus 512GB",
-                    Price = 30890000,
+                    Name = "Vietnam Snow Globe",
+                    Price = 300000,
                     DiscountPrice = 0,
                     Rating = 4.5f,
                     Availability = true,
-                    Stock = 1,
-                    Colors = new List<string> { "White", "Green", "Yellow" },
-                    StorageOptions = new List<string> { "128GB", "256GB", "512GB" },
-                    StorageModifiers = new List<decimal> { 1.0m, 1.1m, 1.2m },
-                    Images = new List<string> { "https://res.cloudinary.com/de0lj9ydr/image/upload/v1729943047/phones/hnlcxkzfry9acrntg3fm.jpg",
-                    "https://res.cloudinary.com/de0lj9ydr/image/upload/v1729943047/phones/jda4h9zgfxarw86dg69e.jpg" },
-                    Description = "Maintaining the modern square design similar to its predecessors, the iPhone 15 Plus is a perfect choice for users who want a balanced size. It’s not too small like the iPhone 15 or overly expensive like the iPhone 15 Pro Max. Additionally, it comes in three storage options: 128GB/256GB/512GB, offering a wide range of choices for iPhone users.",
-                    SpecificationsJson = JsonSerializer.Serialize(new Dictionary<string, string>
-                    {
-                        { "Operating System", "iOS 17" },
-                        { "Mobile Network", "2G, 3G, 4G, 5G" },
-                        { "Internal Storage", "256GB" },
-                        { "Camera Resolution", "Main Camera: 48MP / f1.6 aperture" },
-                        { "SIM Slots", "Dual SIM (nano-SIM and eSIM)" },
-                        { "Processor", "Apple A16 Bionic" },
-                        { "Display Technology", "Super Retina XDR" },
-                        { "Resolution", "2796 x 1290" },
-                        { "Screen Size", "6.7 inches" }
-                    }),
+                    Stock = 50,
+                    Country = "Vietnam",
+                    RelatedCity = "Ho Chi Minh",
+                    Images = new List<string> { "https://thumbs.dreamstime.com/z/flag-vietnam-snow-globe-background-128854962.jpg" },
+                    Description = "A simple depiction of cultural icons in Vietnam, this snow globe is a great gift for those who love the country. Measures 65mm. Made of glass and polyres",
+                    IsPopular = true,
                     IsNewArrival = true
                 };
-
-                var sample3 = new Product
+                // Christmas ornaments
+                var christmas1 = new Product
                 {
-                    Name = "Google 15 Plus 512GB",
-                    Price = 30890000,
-                    DiscountPrice = 28890000,
+                    Name = "Chicago Christmas Wreath Ornaments",
+                    Price = 150000,
+                    DiscountPrice = 120000,
                     Rating = 4.5f,
                     Availability = true,
-                    Stock = 1,
-                    Colors = new List<string> { "Pink", "Blue", "Yellow" },
-                    StorageOptions = new List<string> { "128GB", "256GB", "512GB" },
-                    StorageModifiers = new List<decimal> { 1.0m, 1.1m, 1.2m },
-                    Images = new List<string> { "https://res.cloudinary.com/de0lj9ydr/image/upload/v1729943047/phones/hnlcxkzfry9acrntg3fm.jpg",
-                    "https://res.cloudinary.com/de0lj9ydr/image/upload/v1729943047/phones/jda4h9zgfxarw86dg69e.jpg" },
-                    Description = "Maintaining the modern square design similar to its predecessors, the iPhone 15 Plus is a perfect choice for users who want a balanced size. It’s not too small like the iPhone 15 or overly expensive like the iPhone 15 Pro Max. Additionally, it comes in three storage options: 128GB/256GB/512GB, offering a wide range of choices for iPhone users.",
-                    SpecificationsJson = JsonSerializer.Serialize(new Dictionary<string, string>
-                    {
-                        { "Operating System", "iOS 17" },
-                        { "Mobile Network", "2G, 3G, 4G, 5G" },
-                        { "Internal Storage", "256GB" },
-                        { "Camera Resolution", "Main Camera: 48MP / f1.6 aperture" },
-                        { "SIM Slots", "Dual SIM (nano-SIM and eSIM)" },
-                        { "Processor", "Apple A16 Bionic" },
-                        { "Display Technology", "Super Retina XDR" },
-                        { "Resolution", "2796 x 1290" },
-                        { "Screen Size", "6.7 inches" }
-                    }),
+                    Stock = 50,
+                    Country = "USA",
+                    RelatedCity = "Chicago",
+                    Images = new List<string> { "https://cdn11.bigcommerce.com/s-91br/images/stencil/660x660/products/2762/21484/ornament-chicago-wreath-451IL-0205-1__94435.1576034194.jpg?c=2", "https://cdn11.bigcommerce.com/s-91br/images/stencil/1280x1280/products/2762/21482/ornament-chicago-wreath-451IL-0205-2__94174.1576034195.jpg?c=2" },
+                    Description = "These Chicago Christmas wreath ornaments are a great way to show your love for the Windy City during the holiday season. Made of glass and polyresin. Measures 4.5 inches.",
+
                     IsBestSeller = true,
-                    IsFeatured = true
+                    IsFeatured = true,
+                    IsPopular = true,
 
                 };
 
 
-                var sample4 = new Product
+                var christmas2 = new Product
                 {
-                    Name = "Xiaomi Poco M6 Pro",
-                    Price = 30890000,
-                    DiscountPrice = 28890000,
+                    Name = "St. Louis Porcelain Christmas Ornament",
+
+                    Price = 200000,
+                    DiscountPrice = 150000,
                     Rating = 4.5f,
                     Availability = true,
-                    Stock = 1,
-                    Colors = new List<string> { "Black", "Blue" },
-                    StorageOptions = new List<string> { "64GB", "128GB" },
-                    StorageModifiers = new List<decimal> { 1.0m, 1.2m },
-                    Images = new List<string> { "https://res.cloudinary.com/de0lj9ydr/image/upload/v1732086765/phones/rsuka5u55auiyhrtlqhi.jpg",
-                    "https://res.cloudinary.com/de0lj9ydr/image/upload/v1732086765/phones/wa5azmbshkqe8aq2shgs.jpg",
-                    "https://res.cloudinary.com/de0lj9ydr/image/upload/v1732086765/phones/grypgpq3mxkmqiopwxza.png",
-                    "https://res.cloudinary.com/de0lj9ydr/image/upload/v1732086766/phones/enkilne7lfpfslbathks.png" },
-                    Description = "The Xiaomi Poco M6 Pro features a powerful Snapdragon 4 Gen 1 processor, a 6.79-inch display, 50MP dual camera, 5000mAh battery, and more.",
-                    SpecificationsJson = JsonSerializer.Serialize(new Dictionary<string, string>
-                    {
-                        { "Processor", "Snapdragon 4 Gen 1" },
-                        { "Display", "6.79 inches" },
-                        { "Battery", "5000mAh" },
-                        { "Camera", "50MP dual" }
-                    }),
+                    Stock = 50,
+                    Country = "USA",
+                    RelatedCity = "St. Louis",
+                    Images = new List<string> { "https://cdn11.bigcommerce.com/s-91br/images/stencil/1280x1280/products/1416/16040/ornament-saint-louis-arch-porcelain__97847.1475079680.JPG?c=2",
+                    "https://cdn11.bigcommerce.com/s-91br/images/stencil/1280x1280/products/1416/17762/ornament-porcelain-side-view__41696__37412.1541115513.JPG?c=2" },
+                    Description = "This St. Louis porcelain Christmas ornament features the Gateway Arch and the city skyline. Measures 2.75 inches. Made of porcelain.",
+
                     ReleaseDate = new DateTime(2023, 8, 5),
                     CreatedAt = DateTime.Now,
                     IsNewArrival = true
                 };
 
-
-
-
-
-
-                var vivo = new Product
+                var christmas3 = new Product
                 {
-                    Name = "Vivo Y36",
-                    Price = 8990000,
-                    DiscountPrice = 0,
-                    Rating = 4.3f,
+                    Name = "Halong Bay Vietnam Christmas Ornament Porcelain",
+                    Price = 200000,
+                    DiscountPrice = 1500000,
+                    Rating = 4.5f,
                     Availability = true,
-                    Stock = 1,
-                    Colors = new List<string> { "Black", "Gold" },
-                    StorageOptions = new List<string> { "128GB" },
-                    StorageModifiers = new List<decimal> { 1.0m },
-                    Images = new List<string> { "https://res.cloudinary.com/de0lj9ydr/image/upload/v1732090350/phones/bclm1g5oc9xpgsqtl0hx.webp",
-                    "https://res.cloudinary.com/de0lj9ydr/image/upload/v1732090350/phones/b8m6bzgm2tzskrobqjme.webp",
-                    "https://res.cloudinary.com/de0lj9ydr/image/upload/v1732090350/phones/ukysjhzxc15gp0siditt.webp"
-                    },
-                    Description = "The Vivo Y36 is a budget-friendly smartphone offering a sleek design and robust features for everyday users. It comes with a 6.64-inch display that provides a vivid and immersive viewing experience. Powered by the Snapdragon 680 processor, the Vivo Y36 is engineered for efficiency and smooth multitasking. Its triple-camera system allows users to capture stunning photos, while the 5000mAh battery ensures that you stay powered throughout the day. This phone also supports 44W FlashCharge, meaning you can recharge in a snap when needed. Other notable features include facial recognition, a side-mounted fingerprint scanner, and dual SIM functionality. It is an excellent choice for users looking for an all-around performer with a focus on essential smartphone experiences.",
-                    SpecificationsJson = JsonSerializer.Serialize(new Dictionary<string, string>
-                    {
-                        { "Display", "6.64-inch FHD+" },
-                        { "Processor", "Snapdragon 680" },
-                        { "RAM", "8GB" },
-                        { "Battery", "5000mAh" },
-                        { "Charging", "44W FlashCharge" },
-                        { "OS", "Android 13" }
-                    }),
-                    IsBestSeller = true,
-                    ReleaseDate = new DateTime(2024, 10, 12),
+                    Stock = 50,
+                    Country = "Vietnam",
+                    RelatedCity = "Ha Long",
+                    Images = new List<string> { "https://cdn11.bigcommerce.com/s-91br/images/stencil/1280x1280/products/3198/16192/ornament-vietnam-halong-porcelain__44320.1477943824.jpg?c=2",
+                    "https://cdn11.bigcommerce.com/s-91br/images/stencil/1280x1280/products/3198/19586/ornament-porcelain-side-view__34140__06100.1541864792.JPG?c=2" },
+                    Description = " This Halong Bay Vietnam Christmas ornament features the Halong Bay and the city skyline. Measures 2.75 inches. Made of porcelain.",
+
+                    ReleaseDate = new DateTime(2023, 8, 5),
                     CreatedAt = DateTime.Now,
                     IsNewArrival = true
                 };
-                var realme13 = new Product
+                // Wires
+                var wire1 = new Product
                 {
-                    Name = "Realme 13",
-                    Price = 19990000,
+                    Name = "Golden Gate Bridge Wire Model",
+                    Price = 500000,
+                    DiscountPrice = 0,
                     Rating = 4.5f,
                     Availability = true,
+                    Stock = 50,
+                    Country = "USA",
+                    RelatedCity = "San Francisco",
+                    Images = new List<string> { "https://cdn11.bigcommerce.com/s-91br/images/stencil/1280x1280/products/1672/18016/statue-san-francisco-golden-gate-bridge-wire-model__41454__54940.1541921631.jpg?c=2",
+                    "https://cdn11.bigcommerce.com/s-91br/images/stencil/original/products/1672/16137/statue-san-francisco-golden-gate-bridge-wire-model-angle-view__20645.1493828658.jpg?c=2" },
+                    Description = "This Golden Gate Bridge wire model is a great gift for those who love San Francisco. Measures 10 inches. Made of metal.",
+                    IsBestSeller = true,
+                    IsFeatured = true,
+
+                };
+
+                var wire2 = new Product
+                {
+                    Name = "Chrysler Building Metal Photo and Memo Clip",
+                    Price = 500000,
                     DiscountPrice = 0,
-                    ImportPrice = 15000000,
-                    Colors = new List<string> { "Silver", "Blue", "Black" }, // Available colors
-                    StorageOptions = new List<string> { "128GB", "256GB" }, // Storage options
-                    StorageModifiers = new List<decimal> { 1.0m, 1.2m }, // Storage price modifiers
-                    Images = new List<string>
-    {
-        "https://res.cloudinary.com/de0lj9ydr/image/upload/v1732091392/phones/efcugqlsuehnwno28kxc.webp",
-        "https://res.cloudinary.com/de0lj9ydr/image/upload/v1732091392/phones/e58ednlyix3acngncaax.webp",
-        "https://res.cloudinary.com/de0lj9ydr/image/upload/v1732091392/phones/qmudw17x7hgfcojefprq.webp",
-        "https://res.cloudinary.com/de0lj9ydr/image/upload/v1732091392/phones/zbroyrsihhgjh0fytrov.webp"
-    },
-                    Description = "The Realme 13 is a cutting-edge smartphone that combines advanced technology with an elegant design. Featuring a 6.7-inch Super AMOLED display with a 120Hz refresh rate, this device provides an immersive viewing experience. Powered by the MediaTek Dimensity 9200 processor, it ensures blazing-fast performance and smooth multitasking. The Realme 13 is equipped with a versatile triple-camera setup, allowing you to capture stunning photos and videos in various conditions. Its 5000mAh battery supports 67W SuperDart charging, giving you more usage time with less downtime. Additionally, the phone includes dual stereo speakers, an in-display fingerprint scanner, and runs on Realme UI 5.0 based on Android 14. Whether you’re gaming, streaming, or working, the Realme 13 is built to exceed expectations.",
-                    Specifications = new Dictionary<string, string>
-    {
-        { "Display", "6.7-inch Super AMOLED, 120Hz" },
-        { "Processor", "MediaTek Dimensity 9200" },
-        { "RAM", "12GB" },
-        { "Battery", "5000mAh" },
-        { "Charging", "67W SuperDart" },
-        { "OS", "Android 14" },
-        { "Audio", "Dual stereo speakers" }
-    },
-                    IsBestSeller = true, // Marked as bestseller
-                    IsFeatured = true, // Featured product
-                    ReleaseDate = new DateTime(2024, 11, 5), // Release date
-                    CreatedAt = DateTime.Now, // Automatically set to current time
-                    IsNewArrival = true // Marked as a new arrival
+                    Rating = 4.5f,
+                    Availability = true,
+                    Stock = 50,
+                    Country = "USA",
+                    RelatedCity = "New York City",
+                    Images = new List<string> { "https://cdn11.bigcommerce.com/s-91br/images/stencil/1280x1280/products/2942/14919/memoclip-nyc-chrysler-silver__78990.1647274694.jpg?c=2",
+                    "https://cdn11.bigcommerce.com/s-91br/images/stencil/original/products/2942/19214/HTB1Iwd5GXXXXXXNXFXXq6xXFXXXm__13288__90841.1541500862.jpg?c=2" },
+                    Description = "This Chrysler Building metal photo and memo clip is a great way to display photos and notes. Measures 4 inches. Made of metal.",
+                    IsBestSeller = true,
+                    IsFeatured = true,
+
                 };
 
 
-                await _context.Products.AddRangeAsync(sampleProduct, sample2, sample3, sample4, vivo, realme13);
+                // Book
+                var book1 = new Product
+                {
+                    Name = "NYC Postcard Booklet - 33 Postcards",
+                    Price = 125000,
+                    DiscountPrice = 0,
+                    Rating = 4.5f,
+                    Availability = true,
+                    Stock = 50,
+                    Country = "USA",
+                    RelatedCity = "New York City",
+                    Images = new List<string> { "https://cdn11.bigcommerce.com/s-91br/images/stencil/1280x1280/products/1753/18074/stationery_nyc_postcards_33_pack__03391__74162.1541340174.JPG?c=2" },
+                    Description = "This NYC postcard booklet features 33 postcards of New York City. Made of paper. Measures 4 x 6 inches.",
+                    IsBestSeller = true,
+
+                };
+
+
+                // Statues & Models
+                var statue1 = new Product
+                {
+                    Name = "4 Inch Statue of Liberty Statue Replica",
+                    Price = 500000,
+                    DiscountPrice = 0,
+                    Rating = 4.5f,
+                    Availability = true,
+                    Stock = 50,
+                    Country = "USA",
+                    RelatedCity = "New York City",
+                    Images = new List<string> { "https://cdn11.bigcommerce.com/s-91br/images/stencil/1280x1280/products/2519/16424/statue-nyc-liberty-4in-fg071-v2__46294.1496674971.jpg?c=2",
+                     },
+                    Description = "This 4 inch Statue of Liberty statue replica is a great gift for those who love New York City. Made of polyresin. Measures 4 inches.",
+                    IsBestSeller = true,
+                    IsFeatured = true,
+                    IsNewArrival = true
+
+                };
+                var statue2 = new Product
+                {
+                    Name = "5 Inch Empire State Building Statue",
+                    Price = 500000,
+                    DiscountPrice = 0,
+                    Rating = 4.5f,
+                    Availability = true,
+                    Stock = 50,
+                    Country = "USA",
+                    RelatedCity = "New York City",
+
+                    Images = new List<string> { "https://cdn11.bigcommerce.com/s-91br/images/stencil/1280x1280/products/2854/24314/statue-empire-silver-fg054-2__55759.1655863591.jpg?c=2",
+                    "https://cdn11.bigcommerce.com/s-91br/images/stencil/1280x1280/products/2854/24315/statue-empire-silver-fg054__27225.1655863591.jpg?c=2" },
+                    Description = "This 5 inch Empire State Building statue is a great gift for those who love New York City. Made of polyresin. Measures 5 inches.",
+                    IsBestSeller = true,
+                    IsFeatured = true,
+                    IsNewArrival = true
+
+                };
+
+                // Games & Fun
+                var game1 = new Product
+                {
+                    Name = "American Flag",
+                    Price = 50000,
+                    DiscountPrice = 0,
+                    Rating = 4.5f,
+                    Availability = true,
+                    Stock = 50,
+                    Country = "USA",
+                    RelatedCity = "New York City",
+                    Images = new List<string> { "https://cdn11.bigcommerce.com/s-91br/images/stencil/1280x1280/products/1593/15949/flag-usa-stick__91469.1475005788.jpg?c=2" },
+                    Description = "This American flag is a great way to show your patriotism. Made of polyester. Measures 12 x 18 inches.",
+                    IsBestSeller = true,
+                    IsFeatured = true,
+                };
+
+                var game2 = new Product
+                {
+                    Name = "Diecast NYC Pullback Taxi",
+                    Price = 50000,
+                    DiscountPrice = 0,
+                    Rating = 4.5f,
+                    Availability = true,
+                    Stock = 50,
+                    Country = "USA",
+                    RelatedCity = "New York City",
+                    Images = new List<string> { "https://cdn11.bigcommerce.com/s-91br/images/stencil/1280x1280/products/2771/16393/toy-nyc-taxi-die-cast-pullback-labelled-medallion__12656.1492819711.JPG?c=2" },
+                    Description = "This diecast NYC pullback taxi is a great gift for those who love New York City. Made of diecast metal. Measures 5 inches.",
+                    IsBestSeller = true,
+                    IsNewArrival = true,
+                    IsPopular = true,
+                };
+
+                // Clothing
+
+                var cloth1 = new Product
+                {
+                    Name = "FDNY Embroidered Cap Fire Department",
+                    Price = 200000,
+                    DiscountPrice = 0,
+                    Rating = 4.5f,
+                    Availability = true,
+                    Stock = 50,
+                    Country = "USA",
+                    RelatedCity = "New York City",
+                    Images = new List<string> { "https://cdn11.bigcommerce.com/s-91br/images/stencil/1280x1280/products/2416/24397/hat-nyc-fdny-patch-1__87393.1656241873.jpg?c=2" },
+                    Description = "This FDNY embroidered cap is a great way to show your support for the New York City Fire Department. Made of cotton. One size fits most.",
+                    IsBestSeller = true,
+                    IsFeatured = true,
+                    IsPopular = true,
+                };
+
+                await _context.Products.AddRangeAsync(new List<Product> { snow1, snow2, christmas1, christmas2, wire1, wire2, book1, statue1, statue2, game1, game2, cloth1 });
                 await _context.SaveChangesAsync();
 
-                // Assign random categories to each product
-                var categories = await _context.Categories.ToListAsync();
-                var productsToAssign = await _context.Products.ToListAsync();
+                // Assign categories to products correctly based on var name
+                // Snow globes (snow1, snow2) => Christmas Ornaments
+                var categorySnowGlobes = await _context.Categories.FirstOrDefaultAsync(c => c.Name == "Snow Globes");
+                var categoryChristmasOrnaments = await _context.Categories.FirstOrDefaultAsync(c => c.Name == "Christmas Ornaments");
+                var categoryWires = await _context.Categories.FirstOrDefaultAsync(c => c.Name == "Architecture Wire Replica");
+                var categoryBooks = await _context.Categories.FirstOrDefaultAsync(c => c.Name == "Books");
+                var categoryStatuesModels = await _context.Categories.FirstOrDefaultAsync(c => c.Name == "Statues & Models");
+                var categoryGamesFun = await _context.Categories.FirstOrDefaultAsync(c => c.Name == "Games & Fun");
+                var categoryClothing = await _context.Categories.FirstOrDefaultAsync(c => c.Name == "Clothing");
 
-                foreach (var product in productsToAssign)
+                if (categorySnowGlobes != null)
                 {
-                    var random = new Random();
-                    var randomCategories = categories.OrderBy(x => random.Next()).Take(2).ToList();
-                    product.Categories = randomCategories;
-
+                    categorySnowGlobes.Products = new List<Product> { snow1, snow2 };
                 }
+
+                if (categoryChristmasOrnaments != null)
+                {
+                    categoryChristmasOrnaments.Products = new List<Product> { christmas1, christmas2, christmas3 };
+                }
+
+                if (categoryWires != null)
+                {
+                    categoryWires.Products = new List<Product> { wire1, wire2 };
+                }
+
+                if (categoryBooks != null)
+                {
+                    categoryBooks.Products = new List<Product> { book1 };
+                }
+
+                if (categoryStatuesModels != null)
+                {
+                    categoryStatuesModels.Products = new List<Product> { statue1, statue2 };
+                }
+
+                if (categoryGamesFun != null)
+                {
+                    categoryGamesFun.Products = new List<Product> { game1, game2 };
+                }
+
+                if (categoryClothing != null)
+                {
+                    categoryClothing.Products = new List<Product> { cloth1 };
+                }
+
+                // Save changes to assign the relationships
+                await _context.SaveChangesAsync();
+
                 await _context.SaveChangesAsync();
 
 
@@ -367,7 +491,7 @@ namespace ecommerce_api.Services.JWT
         public async Task CreateOrder(AppDbContext context)
         {
             // Retrieve the product from the database (assuming it has an Id of 3)
-            var product = await context.Products.FindAsync(3);
+            var product = await context.Products.FindAsync(5);
 
             if (product == null)
             {
@@ -395,12 +519,10 @@ namespace ecommerce_api.Services.JWT
                     new CreateOrderDetailDTO
                     {
                     ProductId = product.Id,
-                    Quantity = 2,  // Example quantity
-                    Storage = product.StorageOptions[2],
-                    Color = product.Colors[1],
-                    StorageModifier = product.StorageModifiers[2],
+                    Quantity = 2,
                     }
                 },
+                CustomerName = "John Doe",
                 Address = "1234 Main St",
                 Province = "Ontario",
                 District = "Toronto",

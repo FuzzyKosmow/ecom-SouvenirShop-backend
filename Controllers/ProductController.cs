@@ -371,14 +371,14 @@ namespace ecommerce_api.Controllers
                 default:
                     break;
             }
-
+            var total = productList.Count;
             // Pagination
             var pagedProducts = productList
                 .Skip((page - 1) * limit)
                 .Take(limit)
                 .ToList();
 
-
+            Response.Headers.Add("X-Total-Count", total.ToString());
 
             return Ok(pagedProducts);
 

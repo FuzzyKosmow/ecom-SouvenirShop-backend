@@ -76,36 +76,17 @@ namespace ecommerce_api.Services.OrderService
                 {
                     throw new Exception("Product not found");
                 }
-                // Check matching if color and storage exist. Check if storage and modifier match
-                if (product.Colors != null && product.Colors.Count > 0 && !product.Colors.Contains(orderDetail.Color))
-                {
-                    Console.WriteLine("Color not found");
-                    Console.WriteLine("Product colors: " + string.Join(",", product.Colors));
-                    Console.WriteLine("Order color: " + orderDetail.Color);
-                    throw new Exception("Color not found");
-                }
-                if (product.StorageOptions != null && product.StorageOptions.Count > 0 && !product.StorageOptions.Contains(orderDetail.Storage))
-                {
-                    throw new Exception("Storage not found");
-                }
-                int storageIndex = product.StorageOptions.IndexOf(orderDetail.Storage);
-                if (product.StorageModifiers != null && product.StorageModifiers.Count > 0 && product.StorageModifiers[storageIndex] != orderDetail.StorageModifier)
-                {
-                    throw new Exception("Storage modifier not match");
 
-                }
                 newOrder.OrderDetails.Add(new OrderDetail
                 {
                     ProductId = orderDetail.ProductId,
                     Quantity = orderDetail.Quantity,
                     Price = (decimal)(product.DiscountPrice != null && product.DiscountPrice > 0 ? product.DiscountPrice : product.Price),
-                    Color = orderDetail.Color,
-                    Storage = orderDetail.Storage,
-                    StorageModifier = orderDetail.StorageModifier
+
 
                 });
                 Console.WriteLine("Adding a product with price: " + (decimal)(product.DiscountPrice != null && product.DiscountPrice > 0 ? product.DiscountPrice : product.Price) + " and quantity: " + orderDetail.Quantity);
-                subTotal += (decimal)(product.DiscountPrice != null && product.DiscountPrice > 0 ? product.DiscountPrice : product.Price) * orderDetail.Quantity * orderDetail.StorageModifier;
+                subTotal += (decimal)(product.DiscountPrice != null && product.DiscountPrice > 0 ? product.DiscountPrice : product.Price) * orderDetail.Quantity;
 
             }
 
@@ -167,9 +148,16 @@ namespace ecommerce_api.Services.OrderService
         }
 
 
-        public async Task<List<Order>> GetOrdersFilter(string status, string paymentMethod, string userId, int page, int limit)
+        public async Task<GetAdminOrdersDTO> GetOrdersFilter(string status, string paymentMethod, string userId, int page, int limit)
         {
-            return await _context.Orders.Include(o => o.OrderDetails).Where(o => (status == null || o.Status == status) && (paymentMethod == null || o.PaymentMethod == paymentMethod) && (userId == null || o.UserId == userId)).Skip((page - 1) * limit).Take(limit).ToListAsync();
+            List<Order> orders = await _context.Orders.Include(o => o.OrderDetails).Where(o => (status == null || o.Status == status) && (paymentMethod == null || o.PaymentMethod == paymentMethod) && (userId == null || o.UserId == userId)).Skip((page - 1) * limit).Take(limit).ToListAsync();
+            // Count without pagination
+            var totalOrders = await _context.Orders.CountAsync(o => (status == null || o.Status == status) && (paymentMethod == null || o.PaymentMethod == paymentMethod) && (userId == null || o.UserId == userId));
+            return new GetAdminOrdersDTO
+            {
+                Orders = orders,
+                TotalOrders = totalOrders
+            };
         }
 
         public async Task<Order?> UpdateOrderAsync(int orderId, UpdateOrderDTO order)

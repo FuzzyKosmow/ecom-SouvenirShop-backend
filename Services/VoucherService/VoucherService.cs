@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ecommerce_api.DTO.Voucher;
+using ecommerce_api.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ecommerce_api.Services.VoucherService
@@ -93,9 +94,9 @@ namespace ecommerce_api.Services.VoucherService
 
         }
 
-        public async Task<List<string>> GetVoucherCodes(int limit, int page)
+        public async Task<List<Voucher>> GetVoucherCodes(int limit, int page)
         {
-            return await _context.Vouchers.Skip((page - 1) * limit).Take(limit).Select(v => v.Code).ToListAsync();
+            return await _context.Vouchers.Skip((page - 1) * limit).Take(limit).ToListAsync();
         }
 
         public async Task<bool> IsVoucherUsable(string voucherCode)
