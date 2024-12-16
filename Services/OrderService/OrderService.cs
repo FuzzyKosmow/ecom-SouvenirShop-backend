@@ -150,7 +150,8 @@ namespace ecommerce_api.Services.OrderService
 
         public async Task<GetAdminOrdersDTO> GetOrdersFilter(string status, string paymentMethod, string userId, int page, int limit)
         {
-            List<Order> orders = await _context.Orders.Include(o => o.OrderDetails).Where(o => (status == null || o.Status == status) && (paymentMethod == null || o.PaymentMethod == paymentMethod) && (userId == null || o.UserId == userId)).Skip((page - 1) * limit).Take(limit).ToListAsync();
+            // Include the products in order details
+            List<Order> orders = await _context.Orders.Include(o => o.OrderDetails).Where(o => (status == null || o.Status == status) && (paymentMethod == null || o.PaymentMethod == paymentMethod) && (userId == null || o.UserId == userId)).Skip((page - 1) * limit).Take(limit).Include(o => o.OrderDetails).ThenInclude(od => od.Product).ToListAsync();
             // Count without pagination
             var totalOrders = await _context.Orders.CountAsync(o => (status == null || o.Status == status) && (paymentMethod == null || o.PaymentMethod == paymentMethod) && (userId == null || o.UserId == userId));
             return new GetAdminOrdersDTO

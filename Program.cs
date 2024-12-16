@@ -107,7 +107,7 @@ builder.Services.AddAuthentication(options =>
 #endregion
 
 
-#region Services
+#region Policy
 builder.Services.AddAuthorization(options =>
 {
     // Roles

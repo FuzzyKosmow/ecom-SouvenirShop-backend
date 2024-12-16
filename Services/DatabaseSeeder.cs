@@ -38,14 +38,8 @@ namespace ecommerce_api.Services.JWT
                 await _roleManager.CreateAsync(new IdentityRole("Admin"));
             }
         }
-
-        public async Task SeedDatabase()
+        public async Task SeedCategory()
         {
-            await EnsureRoles();
-            if (!await _roleManager.RoleExistsAsync("User") || !await _roleManager.RoleExistsAsync("Admin"))
-            {
-                throw new Exception("Roles were not created successfully.");
-            }
             // Seed categories
             if (await _context.Categories.CountAsync() == 0)
             {
@@ -107,7 +101,10 @@ namespace ecommerce_api.Services.JWT
                 };
                 await _context.Categories.AddRangeAsync(categories);
             }
-
+            await _context.SaveChangesAsync();
+        }
+        public async Task SeedProduct()
+        {
             // Check if there are any existing products in the database
             if (await _context.Products.CountAsync() == 0)
             {
@@ -129,7 +126,7 @@ namespace ecommerce_api.Services.JWT
 
                 var snow2 = new Product
                 {
-                    Name = "Vietnam Snow Globe",
+                    Name = "Vietnam Big Size Snow Globe",
                     Price = 300000,
                     DiscountPrice = 0,
                     Rating = 4.5f,
@@ -399,75 +396,80 @@ namespace ecommerce_api.Services.JWT
 
                 // Save changes to assign the relationships
                 await _context.SaveChangesAsync();
+            }
 
+        }
+        public async Task SeedUser()
+        {
+            if (_context.ApplicationUsers.Count() == 0)
+            {
+                // Add user
+
+                var userSample = new ApplicationUser
+                {
+                    Email = "user1@gm.com",
+                    FullName = "User 1",
+                    PhoneNumber = "1234567890",
+                    Address = "1234 Main St",
+                    UserName = "user1@gm.com",
+                    EmailConfirmed = true,
+                    NormalizedEmail = "user1@gm.com".ToUpper(),
+
+                };
+                var existingUserByEmail = await _userManager.FindByEmailAsync(userSample.Email);
+                var existingUserByUsername = await _userManager.FindByNameAsync(userSample.UserName);
+                if (existingUserByEmail != null || existingUserByUsername != null)
+                {
+                    return;
+                }
+                else
+                {
+                    var userCreationResult = await _userManager.CreateAsync(userSample, "Password123!");
+                    if (!userCreationResult.Succeeded)
+                    {
+                        throw new Exception("User creation failed: " + string.Join(", ", userCreationResult.Errors.Select(e => e.Description)));
+                    }
+
+                    await _userManager.AddToRoleAsync(userSample, "User");
+
+                }
                 await _context.SaveChangesAsync();
 
 
-            }
-
-            // Add user
-
-            var userSample = new ApplicationUser
-            {
-                Email = "user1@gm.com",
-                FullName = "User 1",
-                PhoneNumber = "1234567890",
-                Address = "1234 Main St",
-                UserName = "user1@gm.com",
-                EmailConfirmed = true,
-                NormalizedEmail = "user1@gm.com".ToUpper(),
-
-            };
-            var existingUserByEmail = await _userManager.FindByEmailAsync(userSample.Email);
-            var existingUserByUsername = await _userManager.FindByNameAsync(userSample.UserName);
-            if (existingUserByEmail != null || existingUserByUsername != null)
-            {
-                return;
-            }
-            else
-            {
-                var userCreationResult = await _userManager.CreateAsync(userSample, "Password123!");
-                if (!userCreationResult.Succeeded)
+                // Add admin
+                var adminSample = new ApplicationUser
                 {
-                    throw new Exception("User creation failed: " + string.Join(", ", userCreationResult.Errors.Select(e => e.Description)));
-                }
-
-                await _userManager.AddToRoleAsync(userSample, "User");
-
-            }
-            await _context.SaveChangesAsync();
-
-
-            // Add admin
-            var adminSample = new ApplicationUser
-            {
-                Email = "admin@admin.com",
-                FullName = "Admin",
-                PhoneNumber = "1234567890",
-                Address = "1234 Main St",
-                UserName = "admin@admin.com",
-                EmailConfirmed = true,
-            };
-            var existingAdminByEmail = await _userManager.FindByEmailAsync(adminSample.Email);
-            var existingAdminByUsername = await _userManager.FindByNameAsync(adminSample.UserName);
-            if (existingAdminByEmail != null || existingAdminByUsername != null)
-            {
-                return;
-            }
-            else
-            {
-                var adminCreationResult = await _userManager.CreateAsync(adminSample, "Password123!");
-                if (!adminCreationResult.Succeeded)
+                    Email = "admin@admin.com",
+                    FullName = "Admin",
+                    PhoneNumber = "1234567890",
+                    Address = "1234 Main St",
+                    UserName = "admin@admin.com",
+                    EmailConfirmed = true,
+                };
+                var existingAdminByEmail = await _userManager.FindByEmailAsync(adminSample.Email);
+                var existingAdminByUsername = await _userManager.FindByNameAsync(adminSample.UserName);
+                if (existingAdminByEmail != null || existingAdminByUsername != null)
                 {
-                    throw new Exception("Admin creation failed: " + string.Join(", ", adminCreationResult.Errors.Select(e => e.Description)));
+                    return;
                 }
+                else
+                {
+                    var adminCreationResult = await _userManager.CreateAsync(adminSample, "Password123!");
+                    if (!adminCreationResult.Succeeded)
+                    {
+                        throw new Exception("Admin creation failed: " + string.Join(", ", adminCreationResult.Errors.Select(e => e.Description)));
+                    }
 
-                await _userManager.AddToRoleAsync(adminSample, "Admin");
+                    await _userManager.AddToRoleAsync(adminSample, "Admin");
 
+                }
+                await _context.SaveChangesAsync();
             }
-            await _context.SaveChangesAsync();
 
-            Console.WriteLine("Database seeded successfully");
+        }
+        public async Task SeedPromotion()
+
+        {
             // Promotion
             // Create a promotion that apply to id 1,2
             // Discount is 50%, valid until 1 month from now
@@ -484,12 +486,41 @@ namespace ecommerce_api.Services.JWT
                 await _context.Promotions.AddAsync(promotion);
                 await _context.SaveChangesAsync();
             }
+        }
+        public async Task SeedDatabase()
+        {
+            await EnsureRoles();
+            if (!await _roleManager.RoleExistsAsync("User") || !await _roleManager.RoleExistsAsync("Admin"))
+            {
+                throw new Exception("Roles were not created successfully.");
+            }
+            await SeedCategory();
+            await SeedProduct();
+            await SeedUser();
+            await SeedPromotion();
+            await SeedVoucher();
             await CreateOrder(_context);
 
 
         }
         public async Task CreateOrder(AppDbContext context)
         {
+            if (await context.Users.CountAsync() == 0)
+            {
+                Console.WriteLine("No user found");
+                return;
+            }
+            if (await context.Products.CountAsync() == 0)
+            {
+                Console.WriteLine("No product found");
+                return;
+            }
+            if (await context.Orders.CountAsync() > 0)
+            {
+                Console.WriteLine("Order already created");
+                return;
+            }
+
             // Retrieve the product from the database (assuming it has an Id of 3)
             var product = await context.Products.FindAsync(5);
 
@@ -540,7 +571,7 @@ namespace ecommerce_api.Services.JWT
 
             // Save changes to the database
             await context.SaveChangesAsync();
-            await SeedVoucher();
+
             Console.WriteLine($"Order created successfully with ID {orderRes.Id} with total {orderRes.Total}, sub total {orderRes.SubTotal}");
         }
         public async Task SeedVoucher()

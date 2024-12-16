@@ -46,7 +46,33 @@ namespace ecommerce_api.Controllers
                 return BadRequest(new { message = e.Message });
             }
         }
-
+        /// <summary>
+        /// Get an order, based on Tracking ID and phone number. If both match, return the correct order.
+        /// </summary>
+        /// <param name="trackingId"></param>
+        /// <param name="phoneNumber"></param>
+        /// <returns>
+        ///    200: The order   
+        ///    404: Order not found
+        /// </returns>
+        [HttpGet("track")]
+        public async Task<IActionResult> TrackOrder([FromQuery] string trackingId, [FromQuery] string phoneNumber)
+        {
+            try
+            {
+                var order = await _shippingService.TrackOrder(trackingId, phoneNumber);
+                if (order == null)
+                {
+                    return NotFound();
+                }
+                return Ok(order);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return NotFound(new { message = e.Message });
+            }
+        }
 
     }
 }
