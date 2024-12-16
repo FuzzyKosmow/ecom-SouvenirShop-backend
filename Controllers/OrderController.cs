@@ -48,7 +48,7 @@ namespace ecommerce_api.Controllers
         ///     List of orders
         /// </returns>
         [HttpGet]
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "User,Admin")]
         public async Task<IActionResult> GetOrders(int page = 1, int limit = 10)
         {
             string userEmail = User.Identity.Name;
@@ -64,7 +64,7 @@ namespace ecommerce_api.Controllers
         ///     404: Not found if the order is not found
         /// </returns>
         [HttpGet("{orderId}")]
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "User,Admin")]
         public async Task<IActionResult> GetOrder(int orderId)
         {
             var order = await _orderService.GetOrderAsync(orderId);
