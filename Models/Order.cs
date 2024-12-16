@@ -46,8 +46,8 @@ namespace ecommerce_api.Models
 
 
         //Ignore
-        // SubTotal = sum of detail price * quantity * storage modifier 
-        public decimal SubTotal => OrderDetails.Sum(x => x.Price * x.Quantity * x.StorageModifier);
+        // SubTotal = sum of detail price * quantity 
+        public decimal SubTotal => OrderDetails.Sum(x => x.Price * x.Quantity);
         public decimal Total => SubTotal + ShippingFee + Tax - (PromoCodeDiscount ?? 0);
         public ICollection<OrderDetail> OrderDetails { get; set; }
     }

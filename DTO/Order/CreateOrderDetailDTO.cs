@@ -10,9 +10,7 @@ namespace ecommerce_api.DTO.Order
         //Product id, quantity
         public int ProductId { get; set; }
         public int Quantity { get; set; }
-        public string Color { get; set; }
-        public string Storage { get; set; }
-        public decimal StorageModifier { get; set; }
+
 
 
     }

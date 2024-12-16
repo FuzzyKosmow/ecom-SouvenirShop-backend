@@ -14,14 +14,13 @@ namespace ecommerce_api.DTO.Product
         public bool? Availability { get; set; }
         public decimal? ImportPrice { get; set; }
         public int Stock { get; set; }
-        public List<string>? Colors { get; set; }
-        public List<string>? StorageOptions { get; set; }
-        public List<decimal>? StorageModifiers { get; set; }
+        public string? Country { get; set; }
         public List<string>? Images { get; set; }
         public string? Description { get; set; }
-        public Dictionary<string, string>? Specifications { get; set; }
         public bool? IsBestSeller { get; set; }
         public bool? IsFeatured { get; set; }
+        public bool? IsPopular { get; set; }
+
         public DateTime? ReleaseDate { get; set; }
         public bool? IsNewArrival { get; set; }
 
