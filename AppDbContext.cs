@@ -28,7 +28,7 @@ namespace ecommerce_api
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
 
-
+        public DbSet<SiteView> SiteViews { get; set; }
         // Promotions and vouchers
         public DbSet<Promotion> Promotions { get; set; }
         public DbSet<Voucher> Vouchers { get; set; }
@@ -45,31 +45,15 @@ namespace ecommerce_api
                 .HasMany(p => p.Categories)
                 .WithMany(c => c.Products)
                 .UsingEntity(j => j.ToTable("ProductCategories"));
-            modelBuilder.Entity<Product>()
-                    .Ignore(p => p.Specifications);
+
             // Set default discount = 0;
             modelBuilder.Entity<Product>()
                 .Property(p => p.DiscountPrice)
                 .HasDefaultValue(0.0m);
-            modelBuilder.Entity<Product>()
-                .Property(p => p.Colors)
-                .HasConversion(
-                    v => string.Join(',', v),
-                    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList()
-                );
 
-            modelBuilder.Entity<Product>()
-                .Property(p => p.StorageOptions)
-                .HasConversion(
-                    v => string.Join(',', v),
-                    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList()
-                );
-            modelBuilder.Entity<Product>()
-                .Property(p => p.StorageModifiers)
-                .HasConversion(
-                    v => string.Join(',', v),
-                    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(decimal.Parse).ToList()
-                );
+
+
+
             modelBuilder.Entity<Product>()
                 .Property(p => p.Images)
                 .HasConversion(

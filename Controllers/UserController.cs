@@ -216,8 +216,20 @@ namespace ecommerce_api.Controllers
             [FromQuery] string fullname = ""
         )
         {
+            var query = _userManager.Users.AsQueryable();
+            if (email.Length > 0)
+            {
+                query = query.Where(u => u.Email.Contains(email));
+            }
+            if (fullname.Length > 0)
+            {
+                query = query.Where(u => u.FullName.Contains(fullname));
+            }
+            var total = query.Count();
             var users = _userManager.Users.Where(u => u.Email.Contains(email) && u.FullName.Contains(fullname)).Skip((page - 1) * limit).Take(limit).ToList();
+
             var userDtos = await AssignTotalOrdersAndTotalValue(users);
+            Response.Headers.Add("X-Total-Count", total.ToString());
             return Ok(userDtos);
         }
         [HttpDelete("{id}")]

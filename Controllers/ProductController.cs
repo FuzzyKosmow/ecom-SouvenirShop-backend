@@ -71,8 +71,8 @@ namespace ecommerce_api.Controllers
     [FromQuery] string? keyword,
     [FromQuery] decimal? price_min,
     [FromQuery] decimal? price_max,
-    [FromQuery] string? color,
-    [FromQuery] string? storage,
+    [FromQuery] string? country,
+    [FromQuery] string? relatedCity,
     [FromQuery] string? sort, // Can be 4 values : "price-high-to-low", "price-low-to-high", "most-popular", "newest-arrivals"
     [FromQuery] int page = 1,
     [FromQuery] int limit = 10)
@@ -105,26 +105,22 @@ namespace ecommerce_api.Controllers
                 query = query.Where(p => p.Price <= price_max);
             }
 
-            // Fetch data from database, then filter colors and storage on the client side
+            // Filter by country
+            if (!string.IsNullOrEmpty(country))
+            {
+                query = query.Where(p => p.Country.ToLower().Contains(country.ToLower()));
+            }
+
+            // Filter by related city
+
+            if (!string.IsNullOrEmpty(relatedCity))
+            {
+                query = query.Where(p => p.RelatedCity.ToLower().Contains(relatedCity.ToLower()));
+            }
+            // Fetch data from database
             var productList = await query.AsNoTracking().ToListAsync();
 
-            // Filter by color(s)
-            if (!string.IsNullOrEmpty(color))
-            {
-                var colorList = color.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToList();
-                productList = productList
-                    .Where(p => p.Colors.Any(c => colorList.Contains(c.ToLower())))
-                    .ToList();
-            }
 
-            // Filter by storage option(s)
-            if (!string.IsNullOrEmpty(storage))
-            {
-                var storageList = storage.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToList();
-                productList = productList
-                    .Where(p => p.StorageOptions.Any(s => storageList.Contains(s.ToLower())))
-                    .ToList();
-            }
 
             // Sorting
             switch (sort)
@@ -198,9 +194,10 @@ namespace ecommerce_api.Controllers
         ///     500: Internal server error if there is an exception
         /// </returns>
         [HttpGet("featured")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetFeaturedProducts()
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetFeaturedProducts(
+            [FromQuery] int limit = 8)
         {
-            var products = await _context.Products.Where(p => p.IsFeatured).ToListAsync();
+            var products = await _context.Products.Where(p => p.IsFeatured).Take(limit).ToListAsync();
             var productDTOs = _mapper.Map<List<ProductDTO>>(products);
             return Ok(productDTOs);
         }
@@ -213,9 +210,10 @@ namespace ecommerce_api.Controllers
         ///     500: Internal server error if there is an exception
         /// </returns>
         [HttpGet("new-arrivals")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetNewArivalProducts()
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetNewArivalProducts(
+            [FromQuery] int limit = 8)
         {
-            var products = await _context.Products.Where(p => p.IsNewArrival).ToListAsync();
+            var products = await _context.Products.Where(p => p.IsNewArrival).Take(limit).ToListAsync();
             var productDTOs = _mapper.Map<List<ProductDTO>>(products);
             return Ok(productDTOs);
         }
@@ -228,9 +226,10 @@ namespace ecommerce_api.Controllers
         ///     500: Internal server error if there is an exception
         /// </returns>
         [HttpGet("bestsellers")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetBestSellerProducts()
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetBestSellerProducts(
+            [FromQuery] int limit = 8)
         {
-            var products = await _context.Products.Where(p => p.IsBestSeller).ToListAsync();
+            var products = await _context.Products.Where(p => p.IsBestSeller).Take(limit).ToListAsync();
             var productDTOs = _mapper.Map<List<ProductDTO>>(products);
             return Ok(productDTOs);
         }
@@ -241,6 +240,16 @@ namespace ecommerce_api.Controllers
         ///     200: The list of deals
         ///     500: Internal server error if there is an exception
         /// </returns>
+
+        [HttpGet("popular")]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetPopularProducts(
+            [FromQuery] int limit = 8)
+        {
+            var products = await _context.Products.Where(p => p.IsPopular).Take(limit).ToListAsync();
+            var productDTOs = _mapper.Map<List<ProductDTO>>(products);
+            return Ok(productDTOs);
+        }
+
         [HttpGet("deals")]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetDeals()
         {
@@ -263,6 +272,26 @@ namespace ecommerce_api.Controllers
             var categoryDTOs = _mapper.Map<List<CategoryDTO>>(categories);
             return Ok(categoryDTOs);
         }
+        // Search through product. Return a list of unique Country, in each country contains a list of related city
+        [HttpGet("destination")]
+        public async Task<ActionResult<List<DestinationDTO>>> GetDestination()
+        {
+            var query = _context.Products
+                .AsQueryable();
+            var countries = await query.Select(p => p.Country).Distinct().ToListAsync();
+            var destinationDTOs = new List<DestinationDTO>();
+            foreach (var country in countries)
+            {
+                var cities = await query.Where(p => p.Country == country).Select(p => p.RelatedCity).Distinct().ToListAsync();
+                var destinationDTO = new DestinationDTO
+                {
+                    Country = country,
+                    Cities = cities
+                };
+                destinationDTOs.Add(destinationDTO);
+            }
+            return Ok(destinationDTOs);
+        }
 
         // Same as normal search, but for admin, return AdminProductDTO which has more details
         [HttpGet("admin-get")]
@@ -272,8 +301,8 @@ namespace ecommerce_api.Controllers
     [FromQuery] string? keyword,
     [FromQuery] decimal? price_min,
     [FromQuery] decimal? price_max,
-    [FromQuery] string? color,
-    [FromQuery] string? storage,
+    [FromQuery] string? country,
+    [FromQuery] string? relatedCity,
     [FromQuery] string? sort, // Can be 4 values : "price-high-to-low", "price-low-to-high", "most-popular", "newest-arrivals"
     [FromQuery] int page = 1,
     [FromQuery] int limit = 10)
@@ -306,26 +335,20 @@ namespace ecommerce_api.Controllers
                 query = query.Where(p => p.Price <= price_max);
             }
 
-            // Fetch data from database, then filter colors and storage on the client side
+            // Filter by country
+            if (!string.IsNullOrEmpty(country))
+            {
+                query = query.Where(p => p.Country.ToLower().Contains(country.ToLower()));
+            }
+
+            // Filter by related city
+
+            if (!string.IsNullOrEmpty(relatedCity))
+            {
+                query = query.Where(p => p.RelatedCity.ToLower().Contains(relatedCity.ToLower()));
+            }
+            // Fetch data from database
             var productList = await query.AsNoTracking().ToListAsync();
-
-            // Filter by color(s)
-            if (!string.IsNullOrEmpty(color))
-            {
-                var colorList = color.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToList();
-                productList = productList
-                    .Where(p => p.Colors.Any(c => colorList.Contains(c.ToLower())))
-                    .ToList();
-            }
-
-            // Filter by storage option(s)
-            if (!string.IsNullOrEmpty(storage))
-            {
-                var storageList = storage.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToList();
-                productList = productList
-                    .Where(p => p.StorageOptions.Any(s => storageList.Contains(s.ToLower())))
-                    .ToList();
-            }
 
             // Sorting
             switch (sort)
@@ -416,9 +439,6 @@ namespace ecommerce_api.Controllers
             _mapper.Map(productDTO, product);
 
             // Update specific properties manually if required ( lists)
-            _context.Entry(product).Property(p => p.Colors).IsModified = true;
-            _context.Entry(product).Property(p => p.StorageOptions).IsModified = true;
-            _context.Entry(product).Property(p => p.StorageModifiers).IsModified = true;
             _context.Entry(product).Property(p => p.Images).IsModified = true;
 
             Console.WriteLine("Best seller status: " + product.IsBestSeller);
@@ -465,15 +485,18 @@ namespace ecommerce_api.Controllers
         // Add new category. Take name
         [HttpPost("category")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<CategoryDTO>> CreateCategory([FromBody] string name)
+        public async Task<ActionResult<CategoryDTO>> CreateCategory([FromBody] CreateCategoryDTO dto)
+
         {
             // Check if new name exists
-            var category = await _context.Categories.FirstOrDefaultAsync(c => c.Name == name);
-            if (category != null)
+            var category = await _context.Categories.FirstOrDefaultAsync(c => c.Name == dto.Name);
+            category = new Category
             {
-                return BadRequest("Category already exists");
-            }
-            category = new Category { Name = name };
+                Name = dto.Name,
+                IsPopular = dto.IsPopular,
+                Description = dto.Description,
+                Image = dto.Image
+            };
             await _context.Categories.AddAsync(category);
             await _context.SaveChangesAsync();
             var categoryDTO = _mapper.Map<CategoryDTO>(category);

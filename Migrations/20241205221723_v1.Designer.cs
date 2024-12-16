@@ -12,7 +12,7 @@ using ecommerce_api;
 namespace ecommerce_api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241121034031_v1")]
+    [Migration("20241205221723_v1")]
     partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -128,6 +128,17 @@ namespace ecommerce_api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsPopular")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -159,6 +170,10 @@ namespace ecommerce_api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CardNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("District")
@@ -220,10 +235,6 @@ namespace ecommerce_api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Color")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
@@ -235,13 +246,6 @@ namespace ecommerce_api.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
-
-                    b.Property<string>("Storage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("StorageModifier")
-                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -263,7 +267,7 @@ namespace ecommerce_api.Migrations
                     b.Property<bool>("Availability")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Colors")
+                    b.Property<string>("Country")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -277,7 +281,9 @@ namespace ecommerce_api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("DiscountPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0.0m);
 
                     b.Property<string>("Images")
                         .IsRequired()
@@ -295,6 +301,9 @@ namespace ecommerce_api.Migrations
                     b.Property<bool>("IsNewArrival")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsPopular")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -308,23 +317,15 @@ namespace ecommerce_api.Migrations
                     b.Property<float>("Rating")
                         .HasColumnType("real");
 
+                    b.Property<string>("RelatedCity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("SpecificationsJson")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Stock")
                         .HasColumnType("int");
-
-                    b.Property<string>("StorageModifiers")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StorageOptions")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

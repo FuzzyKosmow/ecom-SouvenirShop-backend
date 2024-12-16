@@ -17,17 +17,19 @@ namespace ecommerce_api.Profiles
         {
             CreateMap<Category, CategoryDTO>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Image))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+                .ForMember(dest => dest.IsPopular, opt => opt.MapFrom(src => src.IsPopular));
 
             CreateMap<Product, ProductDetailsDTO>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
+                .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country))
+                .ForMember(dest => dest.RelatedCity, opt => opt.MapFrom(src => src.RelatedCity))
                 .ForMember(dest => dest.Discount_price, opt => opt.MapFrom(src => src.DiscountPrice))
                 .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.Images))
-                .ForMember(dest => dest.Colors, opt => opt.MapFrom(src => src.Colors))
-                .ForMember(dest => dest.Storage, opt => opt.MapFrom(src => src.StorageOptions))
-                .ForMember(dest => dest.Specifications, opt => opt.MapFrom(src => src.Specifications))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.Rating))
                 .ForMember(dest => dest.Categories, opt => opt.MapFrom(src =>
@@ -39,8 +41,8 @@ namespace ecommerce_api.Profiles
                 .ForMember(dest => dest.Is_bestseller, opt => opt.MapFrom(src => src.IsBestSeller))
                 .ForMember(dest => dest.Is_featured, opt => opt.MapFrom(src => src.IsFeatured))
                 .ForMember(dest => dest.Is_new_arrival, opt => opt.MapFrom(src => src.IsNewArrival))
-                .ForMember(dest => dest.Release_date, opt => opt.MapFrom(src => src.ReleaseDate))
-                .ForMember(dest => dest.StorageModifiers, opt => opt.MapFrom(src => src.StorageModifiers));
+                .ForMember(dest => dest.Is_popular, opt => opt.MapFrom(src => src.IsPopular))
+                .ForMember(dest => dest.Release_date, opt => opt.MapFrom(src => src.ReleaseDate));
 
 
             // Product -> ProductDTO
@@ -48,10 +50,10 @@ namespace ecommerce_api.Profiles
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
+                .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country))
+                .ForMember(dest => dest.RelatedCity, opt => opt.MapFrom(src => src.RelatedCity))
                 .ForMember(dest => dest.Discount_price, opt => opt.MapFrom(src => src.DiscountPrice))
                 .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Images.FirstOrDefault()))
-                .ForMember(dest => dest.Colors, opt => opt.MapFrom(src => src.Colors))
-                .ForMember(dest => dest.Storage, opt => opt.MapFrom(src => src.StorageOptions))
                 .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.Rating))
                 .ForMember(dest => dest.Categories, opt => opt.MapFrom(src =>
                 src.Categories.Select(c => new CategoryDTO
@@ -59,26 +61,26 @@ namespace ecommerce_api.Profiles
                     Id = c.Id,
                     Name = c.Name
                 }).ToList()))
-
                 .ForMember(dest => dest.Is_bestseller, opt => opt.MapFrom(src => src.IsBestSeller))
                 .ForMember(dest => dest.Is_featured, opt => opt.MapFrom(src => src.IsFeatured))
                 .ForMember(dest => dest.Is_new_arrival, opt => opt.MapFrom(src => src.IsNewArrival))
-                .ForMember(dest => dest.Release_date, opt => opt.MapFrom(src => src.ReleaseDate))
-                .ForMember(dest => dest.StorageModifiers, opt => opt.MapFrom(src => src.StorageModifiers));
+                .ForMember(dest => dest.Is_popular, opt => opt.MapFrom(src => src.IsPopular))
+                .ForMember(dest => dest.Release_date, opt => opt.MapFrom(src => src.ReleaseDate));
+
 
 
             //Create ProductDTO -> Product
             CreateMap<CreateProductDTO, Product>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
-                .ForMember(dest => dest.Colors, opt => opt.MapFrom(src => src.Colors))
-                .ForMember(dest => dest.StorageOptions, opt => opt.MapFrom(src => src.StorageOptions))
+                .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country))
+                .ForMember(dest => dest.RelatedCity, opt => opt.MapFrom(src => src.RelatedCity))
                 .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.Images))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.ImportPrice, opt => opt.MapFrom(src => src.ImportPrice))
-                .ForMember(dest => dest.Specifications, opt => opt.MapFrom(src => src.Specifications))
-                .ForMember(dest => dest.ReleaseDate, opt => opt.MapFrom(src => src.ReleaseDate))
-                .ForMember(dest => dest.StorageModifiers, opt => opt.MapFrom(src => src.StorageModifiers));
+
+                .ForMember(dest => dest.ReleaseDate, opt => opt.MapFrom(src => src.ReleaseDate));
+
 
             //Update ProductDTO -> Product
             CreateMap<UpdateProductDTO, Product>()

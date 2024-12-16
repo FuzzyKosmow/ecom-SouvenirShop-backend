@@ -5,13 +5,12 @@ using System.Threading.Tasks;
 
 namespace ecommerce_api.DTO.Category
 {
-    public class CategoryDTO
+    public class CreateCategoryDTO
     {
-        public int Id { get; set; }
+
         public string Name { get; set; }
         public string Image { get; set; }
         public string Description { get; set; }
         public bool IsPopular { get; set; }
-
     }
 }

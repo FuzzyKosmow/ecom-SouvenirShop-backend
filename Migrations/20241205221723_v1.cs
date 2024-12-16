@@ -59,7 +59,10 @@ namespace ecommerce_api.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsPopular = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -73,6 +76,7 @@ namespace ecommerce_api.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -252,22 +256,21 @@ namespace ecommerce_api.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    DiscountPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RelatedCity = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DiscountPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true, defaultValue: 0.0m),
                     Rating = table.Column<float>(type: "real", nullable: false),
                     Availability = table.Column<bool>(type: "bit", nullable: false),
                     ImportPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Stock = table.Column<int>(type: "int", nullable: false),
-                    Colors = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StorageOptions = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StorageModifiers = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Images = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SpecificationsJson = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsBestSeller = table.Column<bool>(type: "bit", nullable: false),
                     IsFeatured = table.Column<bool>(type: "bit", nullable: false),
                     ReleaseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     IsNewArrival = table.Column<bool>(type: "bit", nullable: false),
+                    IsPopular = table.Column<bool>(type: "bit", nullable: false),
                     PromotionId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -289,10 +292,7 @@ namespace ecommerce_api.Migrations
                     OrderId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Storage = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StorageModifier = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
