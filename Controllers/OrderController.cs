@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ecommerce_api.DTO.Order;
 using ecommerce_api.Models;
+using ecommerce_api.Services.NotificationService;
 using ecommerce_api.Services.OrderService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -28,13 +29,16 @@ namespace ecommerce_api.Controllers
         private readonly AppDbContext _context;
         private readonly IOrderService _orderService;
         private readonly UserManager<ApplicationUser> _userManager;
-
-        public OrderController(AppDbContext context, IOrderService orderService, UserManager<ApplicationUser> userManager)
+        private readonly INotificationService _notificationService;
+        public OrderController(AppDbContext context, IOrderService orderService, UserManager<ApplicationUser> userManager,
+            INotificationService notificationService)
         {
             _context = context;
             _orderService = orderService;
             _userManager = userManager;
+            _notificationService = notificationService;
         }
+
         /// <summary>
         /// Get all orders of the current user
         /// </summary>
@@ -261,6 +265,8 @@ namespace ecommerce_api.Controllers
             }
             order.Status = ORDER_STATUS_COMPLETED;
             await _context.SaveChangesAsync();
+            if (order.UserId != null)
+                await _notificationService.SendNotification(order.UserId, "Order is being processed", "Your order is being processed and will be delivered soon");
             return Ok(order);
         }
         /// <summary>
@@ -285,6 +291,8 @@ namespace ecommerce_api.Controllers
             }
             order.Status = ORDER_STATUS_DELIVERED;
             await _context.SaveChangesAsync();
+            if (order.UserId != null)
+                await _notificationService.SendNotification(order.UserId, "Order is delivered", "Your order has been delivered. Enjoy your products!");
             return Ok(order);
         }
         /// <summary>
@@ -321,6 +329,8 @@ namespace ecommerce_api.Controllers
 
             order.Status = ORDER_STATUS_CANCELLED;
             await _context.SaveChangesAsync();
+            if (order.UserId != null)
+                await _notificationService.SendNotification(order.UserId, "Order is cancelled", "Your order has been cancelled. Please contact us for more information");
             return Ok(order);
         }
 

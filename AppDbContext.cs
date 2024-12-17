@@ -27,7 +27,7 @@ namespace ecommerce_api
 
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
-
+        public DbSet<UserNotification> UserNotifications { get; set; }
         public DbSet<SiteView> SiteViews { get; set; }
         // Promotions and vouchers
         public DbSet<Promotion> Promotions { get; set; }

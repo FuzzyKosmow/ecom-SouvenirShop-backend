@@ -6,6 +6,7 @@ using ecommerce_api.Models;
 using ecommerce_api.Profiles;
 using ecommerce_api.Services;
 using ecommerce_api.Services.JWT;
+using ecommerce_api.Services.NotificationService;
 using ecommerce_api.Services.OrderService;
 using ecommerce_api.Services.PaymentService;
 using ecommerce_api.Services.ProductService;
@@ -128,6 +129,7 @@ builder.Services.AddScoped<IVoucherService, VoucherService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<ISiteInfoService, SiteInfoService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 #endregion
 
 
