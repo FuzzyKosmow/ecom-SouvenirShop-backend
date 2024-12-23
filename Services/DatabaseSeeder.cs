@@ -184,7 +184,7 @@ namespace ecommerce_api.Services.JWT
                 {
                     Name = "Halong Bay Vietnam Christmas Ornament Porcelain",
                     Price = 200000,
-                    DiscountPrice = 1500000,
+                    DiscountPrice = 150000,
                     Rating = 4.5f,
                     Availability = true,
                     Stock = 50,
