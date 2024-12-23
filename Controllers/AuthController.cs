@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using ecommerce_api.DTO.User;
 using ecommerce_api.Models;
-using ecommerce_api.Services.Cookies;
 using ecommerce_api.Services.JWT;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
